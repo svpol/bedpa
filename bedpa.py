@@ -1,8 +1,5 @@
 import pandas as pd
 from pathlib import Path
-import matplotlib
-import matplotlib.pyplot as plt
-import seaborn as sns
 
 
 class Bed6:
