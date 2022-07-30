@@ -57,6 +57,15 @@ class Bed12(Bed6):
         """
         return self.df[7].unique()
 
+    def count_seq_types(self):
+        counts = self.df[7].value_counts()
+        counts = counts.to_frame(name="count")
+        share = self.df[7].value_counts() / len(self.df)
+        share = share.to_frame(name="share")
+        counts_share = pd.concat([counts, share], axis=1)
+        counts_share = counts_share.rename_axis('seq_type').reset_index()
+        return counts_share
+
     def select_seq_type(self, seq_type):
         """
         Selects all records of a particular type (like "exon", "gene", etc.) and writes them to a bed file.
@@ -81,6 +90,7 @@ if __name__ == "__main__":
     del bed6_chr22
 
     bed12 = Bed12('./samples/bed12/bed12.bed')
+    print(bed12.count_seq_types())
     print(bed12.get_chr_names())
     bed12_chr1_path = bed12.select_chr("chr1")
     del bed12
