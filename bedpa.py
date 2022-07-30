@@ -1,5 +1,8 @@
 import pandas as pd
 from pathlib import Path
+import matplotlib
+import matplotlib.pyplot as plt
+import seaborn as sns
 
 
 class Bed6:
@@ -58,13 +61,16 @@ class Bed12(Bed6):
         return self.df[7].unique()
 
     def count_seq_types(self):
+        """
+        Counts the number of each sequence type (e.g.: "exon", "gene", etc.) and its percentage
+        among all types.
+        :return: a dataframe with count and percentage for each sequence type.
+        """
         counts = self.df[7].value_counts()
         counts = counts.to_frame(name="count")
         share = self.df[7].value_counts() / len(self.df)
-        share = share.to_frame(name="share")
-        counts_share = pd.concat([counts, share], axis=1)
-        counts_share = counts_share.rename_axis('seq_type').reset_index()
-        return counts_share
+        counts["percentage"] = round(share * 100, 2)
+        return counts.rename_axis('seq_type').reset_index()
 
     def select_seq_type(self, seq_type):
         """
