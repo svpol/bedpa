@@ -1,5 +1,12 @@
 import pandas as pd
 from pathlib import Path
+import matplotlib
+import matplotlib.pyplot as plt
+import numpy as np
+import seaborn as sns
+
+
+plt.style.use('_mpl-gallery-nogrid')
 
 
 class Bed6:
@@ -69,6 +76,30 @@ class Bed12(Bed6):
         counts["percentage"] = round(share * 100, 2)
         return counts.rename_axis('seq_type').reset_index()
 
+    def draw_seq_types(self):
+        """
+        Draws a pie diagram for sequence types percentage and writes it to the png file.
+        :return: path to the output file.
+        """
+        out_file = self.stem + "_seq_types.png"
+        out_path = Path(self.directory, out_file)
+
+        seq_types = self.count_seq_types()
+        labels = seq_types.seq_type
+        sizes = seq_types.percentage
+
+        fig, ax = plt.subplots(figsize=(9, 8), subplot_kw={"aspect": "equal"})
+        wedges, texts, autotexts = ax.pie(sizes, autopct='%1.1f%%',
+                textprops={"color": "w", "fontsize": 16, "fontweight": "bold"})
+
+        ax.legend(wedges, labels, title="Sequence types", fontsize=14,
+                  title_fontsize=14, loc="best")
+
+        ax.set_title("Sequence type proportion", fontsize=20, y=0.96)
+        plt.savefig(out_path, format='png')
+
+        return out_path
+
     def select_seq_type(self, seq_type):
         """
         Selects all records of a particular type (like "exon", "gene", etc.) and writes them to a bed file.
@@ -94,6 +125,7 @@ if __name__ == "__main__":
 
     bed12 = Bed12('./samples/bed12/bed12.bed')
     print(bed12.count_seq_types())
+    bed12.draw_seq_types()
     print(bed12.get_chr_names())
     bed12_chr1_path = bed12.select_chr("chr1")
     del bed12
