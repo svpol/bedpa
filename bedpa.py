@@ -1,12 +1,6 @@
 import pandas as pd
 from pathlib import Path
-import matplotlib
 import matplotlib.pyplot as plt
-import numpy as np
-import seaborn as sns
-
-
-plt.style.use('_mpl-gallery-nogrid')
 
 
 class Bed6:
@@ -88,6 +82,7 @@ class Bed12(Bed6):
         labels = seq_types.seq_type
         sizes = seq_types.percentage
 
+        plt.style.use('_mpl-gallery-nogrid')
         fig, ax = plt.subplots(figsize=(9, 8), subplot_kw={"aspect": "equal"})
         wedges, texts, autotexts = ax.pie(sizes, autopct='%1.1f%%',
                 textprops={"color": "w", "fontsize": 16, "fontweight": "bold"})
