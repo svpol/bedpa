@@ -25,7 +25,7 @@ class Bed6:
         :return: path to the output file.
         """
         chr_selected = self.df[self.df[0] == chr_name]
-        out_file = self.stem + "_" + chr_name + ".bed"
+        out_file = f"{self.stem}_{chr_name}.bed"
         out_path = Path(self.directory, out_file)
         chr_selected.to_csv(out_path, sep='\t', header=False, index=False)
         return out_path
@@ -40,7 +40,7 @@ class Bed6:
             selected_strand = self.df[self.df[5] == "+"]
         elif strand == "minus":
             selected_strand = self.df[self.df[5] == "-"]
-        out_file = self.stem + "_" + strand + ".bed"
+        out_file = f"{self.stem}_{strand}.bed"
         out_path = Path(self.directory, out_file)
         selected_strand.to_csv(out_path, sep='\t', header=False, index=False)
         return out_path
@@ -75,7 +75,7 @@ class Bed12(Bed6):
         Draws a pie diagram for sequence types percentage and writes it to the png file.
         :return: path to the output file.
         """
-        out_file = self.stem + "_seq_types.png"
+        out_file = f"{self.stem}_seq_types.png"
         out_path = Path(self.directory, out_file)
 
         seq_types = self.count_seq_types()
@@ -102,7 +102,7 @@ class Bed12(Bed6):
         :return:
         """
         selected_types = self.df[self.df[7] == seq_type]
-        out_file = self.stem + "_" + seq_type + ".bed"
+        out_file = f"{self.stem}_{seq_type}.bed"
         out_path = Path(self.directory, out_file)
         selected_types.to_csv(out_path, sep='\t', header=False, index=False)
         return out_path
